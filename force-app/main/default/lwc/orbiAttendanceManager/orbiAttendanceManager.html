@@ -1,0 +1,341 @@
+<template>
+    <c-custom-toast-message></c-custom-toast-message>
+
+    <div if:true={showSpinner} class="backgroundInverse">
+        <lightning-spinner class="slds-is-fixed" alternative-text="Loading" size="medium" variant="brand">
+        </lightning-spinner>
+    </div>
+
+    <c-orbi-exchange-header is-user-login={isAuthenticated} onperform_actions={handleUserActions}
+        query-term={queryTerm}>
+    </c-orbi-exchange-header>
+
+    <template lwc:if={isAuthenticated}>
+        <div class="slds-text-heading_medium">
+            <div class="slds-notify slds-notify_alert" role="alert">
+                <lightning-icon icon-name="utility:info" size="small" variant="inverse">
+                </lightning-icon>&nbsp;
+                <h2>Login first to see your Attendance.</h2>
+            </div>
+        </div>
+    </template>
+
+    <template lwc:else>
+        <lightning-layout>
+            <lightning-layout-item size="12" style="padding: 0.75rem 0.75rem 0 0.75rem;">
+                <div class="header">
+                    <div class="header-content">
+                        <h2 class="title">Attendance Dashboard</h2>
+                    </div>
+
+                    <div class="subHeading">
+                        <span class="stat-item">
+                            <lightning-formatted-date-time value={todayDate} weekday="short" day="2-digit" month="short"
+                                year="numeric">
+                            </lightning-formatted-date-time>
+                        </span>
+                        <span class="separator">•</span>
+                        <span class="stat-item">Days Present: {totalPresentThisMonth}</span>
+                        <span class="separator">•</span>
+                        <span class="stat-item">Total Hours: {hoursWorked} / {totalWorkingHours}</span>
+                    </div>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <lightning-layout>
+            <lightning-layout-item size="5" padding="around-small">
+                <div class="progress-section">
+                    <div class="section-title-left">TimeSheet</div>
+
+                    <div class="timesheet-layout">
+                        <div class="timesheet-card">
+                            <div class="timesheet-row">
+                                <div class="ts-item">
+                                    <span class="ts-label">Login Time</span>
+                                    <template lwc:if={loginDateTime}>
+                                        <lightning-formatted-date-time class="ts-value" value={loginDateTime}
+                                            hour="2-digit" minute="2-digit" hour12="true">
+                                        </lightning-formatted-date-time>
+                                    </template>
+                                    <template lwc:else>
+                                        <span class="ts-value">-</span>
+                                    </template>
+                                </div>
+
+                                <div class="ts-item">
+                                    <span class="ts-label">Working From</span>
+                                    <span class="ts-value">{workingFrom}</span>
+                                </div>
+
+                                <div class="ts-item">
+                                    <span class="ts-label">Status</span>
+                                    <span class={loginStatusClass}>
+                                        {statusLabel}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ring-column">
+                            <div class="progress-container">
+                                <svg class="progress-ring" width="200" height="200" viewBox="0 0 200 200">
+                                    <circle cx="100" cy="100" r="85" fill="none" stroke="#E8E8E8" stroke-width="10" />
+                                    <circle class="progress-circle" cx="100" cy="100" r="85" fill="none"
+                                        stroke="#00BCD4" stroke-width="10" stroke-linecap="round"
+                                        style={progressStyle} />
+                                </svg>
+                                <div class="progress-text">
+                                    <span class="hours">{hoursWorked}</span>
+                                    <span class="unit">hrs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="4" padding="around-small">
+                <div class="statistics-section">
+                    <div class="section-title">Statistics</div>
+
+                    <!-- Today Stat -->
+                    <div class="stat-item-container">
+                        <div class="stat-header">
+                            <span class="stat-label">Today</span>
+                            <span class="stat-value">{todayData.actualHours} / {todayData.expectedHours} hrs</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-background">
+                                <div class="progress-bar" style={getTodayProgressStyle}></div>
+                            </div>
+                            <span class="progress-percentage">{todayData.workingPercentage}%</span>
+                        </div>
+                    </div>
+
+                    <!-- This Week Stat -->
+                    <div class="stat-item-container">
+                        <div class="stat-header">
+                            <span class="stat-label">This Week</span>
+                            <span class="stat-value">{thisWeekData.actualHours} / {thisWeekData.expectedHours}
+                                hrs</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-background">
+                                <div class="progress-bar week" style={getThisWeekProgressStyle}></div>
+                            </div>
+                            <span class="progress-percentage">{thisWeekData.workingPercentage}%</span>
+                        </div>
+                        <span class="days-info">{thisWeekData.totalPresent} / {thisWeekData.workingDays} days</span>
+                    </div>
+
+                    <!-- This Month Stat -->
+                    <div class="stat-item-container">
+                        <div class="stat-header">
+                            <span class="stat-label">This Month</span>
+                            <span class="stat-value">{thisMonthData.actualHours} / {thisMonthData.expectedHours}
+                                hrs</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-background">
+                                <div class="progress-bar month" style={getThisMonthProgressStyle}></div>
+                            </div>
+                            <span class="progress-percentage">{thisMonthData.workingPercentage}%</span>
+                        </div>
+                        <span class="days-info">{thisMonthData.totalPresent} days present</span>
+                    </div>
+
+                    <!-- Remaining Stat -->
+                    <div class="stat-item-container">
+                        <div class="stat-header">
+                            <span class="stat-label">Remaining</span>
+                            <span class="stat-value">{remainingData.actualHours} / {remainingData.expectedHours}
+                                hrs</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-background">
+                                <div class="progress-bar remaining" style={getRemainingProgressStyle}></div>
+                            </div>
+                            <span class="progress-percentage">{remainingData.workingPercentage}%</span>
+                        </div>
+                        <span class="days-info">{remainingData.totalPresent} days remaining</span>
+                    </div>
+                </div>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="3" padding="around-small">
+                <div class="dahshboard-summery-section">
+                    <div class="dahshboard-summery-header">
+                        <div class="section-title">Dashboard Summary</div>
+                        <div class="period-selector">
+                            <select id="periodSelect" onchange={handlePeriods} value={selectedPeriod}>
+                                <option value="THIS_WEEK">This Week</option>
+                                <option value="THIS_MONTH">This Month</option>
+                                <option value="THIS_QUARTER">This Quarter</option>
+                                <option value="THIS_YEAR">This Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="dashboard-chart-data">
+                        <div class="chart-container">
+                            <canvas class="attendance-chart" lwc:dom="manual"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+
+
+        </lightning-layout>
+
+        <lightning-layout>
+            <lightning-layout-item size="6" padding="around-small">
+                <div class="attendance-records-section">
+                    <div class="section-title">Attendance Records</div>
+
+                    <div class="table-wrapper">
+                        <table class="attendance-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Login Time</th>
+                                    <th>LogOff Time</th>
+                                    <th>Hours Worked</th>
+                                    <th>Working From</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={attendanceRecords} for:item="record">
+                                    <tr key={record.rowNumber}>
+                                        <td>
+                                            <template lwc:if={record.logInDate}>
+                                                <lightning-formatted-date-time
+                                                    value={record.logInDate}></lightning-formatted-date-time>
+                                            </template>
+                                            <template lwc:else>-</template>
+                                        </td>
+                                        <td>
+                                            <template lwc:if={record.logInTime}>
+                                                <lightning-formatted-date-time value={record.logInTime} hour="2-digit"
+                                                    minute="2-digit" hour12="true">
+                                                </lightning-formatted-date-time>
+                                            </template>
+                                            <template lwc:else>-</template>
+                                        </td>
+                                        <td>
+                                            <template lwc:if={record.logOffTime}>
+                                                <lightning-formatted-date-time value={record.logOffTime} hour="2-digit"
+                                                    minute="2-digit" hour12="true">
+                                                </lightning-formatted-date-time>
+                                            </template>
+                                            <template lwc:else>-</template>
+                                        </td>
+                                        <td class="hours-cell">
+                                            <template
+                                                lwc:if={record.productionHours}>{record.productionHours}</template>
+                                            <template lwc:else>0.00</template>
+                                        </td>
+                                        <td>{record.workingFrom}</td>
+                                        <td>
+                                            <template lwc:if={record.status}>
+                                                <span class={record.statusBadgeClass}>{record.status}</span>
+                                            </template>
+                                            <template lwc:else>
+                                                <span class="status-badge">N/A</span>
+                                            </template>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <template lwc:if={hasAttendanceRecords}>
+                        
+                    </template>
+                    <template lwc:else>
+                        <div class="empty-state">
+                            <p>No attendance records found for this month</p>
+                        </div>
+                    </template>
+                </div>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="6" padding="around-small">
+                <div class="leave-tracker-section">
+                    <div class="leave-tracker-header">
+                        <div class="section-title">Manage Leave Requests</div>
+                        <div class="period-selector">
+                            <div class="select-wrapper">
+                                <select id="leaveperiodSelect" class="custom-select" onchange={handleLeavePeriodSelect}
+                                    value={selectedLeavePeriod}>
+                                    <option value="LAST_QUARTER">Last Quarter</option>
+                                    <option value="THIS_QUARTER">This Quarter</option>
+                                    <option value="THIS_MONTH">This Month</option>
+                                    <option value="LAST_MONTH">Last Month</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="leave-tracker-data">
+                        <div class="leave-tracker-container">
+                            <div class="leave-tracker-container-header">
+                                <div class="leave-cards-container">
+                                    <div class="leave-card">
+                                        <div class="leave-card-header">Annual Leave Balance</div>
+                                        <div class="leave-card-value">{remainingLeaves} days</div>
+                                        <div class="leave-card-footer">Out of {leavesAllowed} days allowed</div>
+                                    </div>
+
+                                    <div class="leave-card">
+                                        <div class="leave-card-header">Leaves Taken</div>
+                                        <div class="leave-card-value">{leaveDetails.length}</div>
+                                        <div class="leave-card-footer">Total records found</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="leave-tracker-container-main">
+                                <div class="table-wrapper slds-m-top_medium">
+                                    <table class="attendance-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Leave Type</th>
+                                                <th>Date</th>
+                                                <th>Duration</th>
+                                                <th>Category</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={leaveDetails} for:item="leave">
+                                                <tr key={leave.LeaveDate}>
+                                                    <td>{leave.leaveType} Leave</td>
+                                                    <td>
+                                                        <lightning-formatted-date-time value={leave.LeaveDate}
+                                                            month="short" day="2-digit" year="numeric">
+                                                        </lightning-formatted-date-time>
+                                                    </td>
+                                                    <td>{leave.duration} Day</td>
+                                                    <td>{leave.leaveWFH}</td>
+                                                    <td>
+                                                        <span class={leave.badgeClass}>{leave.status}</span>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+
+                                    <template lwc:if={noLeavesFound}>
+                                        <div class="leave-empty-state">
+                                            <p>No leave requests found for this period.</p>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+</template>

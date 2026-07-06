@@ -1,0 +1,824 @@
+/* ============================================
+   HEADER SECTION STYLES
+   ============================================ */
+.header {
+    background: #FFFFFF;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 0px 20px;
+}
+
+.title {
+    margin: 0;
+    font-size: 35px;
+    font-weight: 600;
+    color: #0091DA;
+}
+
+.subHeading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0px 20px 15px 20px;
+    font-size: 12px;
+    color: #666;
+}
+
+.separator {
+    color: #999;
+    opacity: 0.6;
+}
+
+.stat-item {
+    white-space: nowrap;
+}
+
+/* ============================================
+   SECTION TITLE
+   ============================================ */
+.section-title {
+    font-size: 30px;
+    font-weight: 600;
+    color: #0091DA;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.section-title-left {
+    font-size: 30px;
+    font-weight: 600;
+    color: #0091DA;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    text-align: left;
+    width: 100%;
+}
+
+/* ============================================
+   TIMESHEET SECTION
+   ============================================ */
+.progress-section {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 435px;
+}
+
+.progress-section .section-title-left {
+    align-self: flex-start;
+    width: 100%;
+}
+
+/* Two Column Layout - CHANGED TO SINGLE COLUMN */
+.timesheet-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    align-items: center;
+}
+
+/* Left Column - Info */
+.info-column {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+/* Right Column - Ring */
+.ring-column {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Progress Container */
+.progress-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.progress-circle {
+    transition: stroke-dashoffset 0.6s ease-in-out;
+    stroke: #26C6DA;
+}
+
+.progress-text {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+.hours {
+    font-size: 48px;
+    font-weight: 700;
+    color: #333;
+    line-height: 1;
+}
+
+.unit {
+    font-size: 13px;
+    color: #999;
+    font-weight: 500;
+}
+
+/* TimeSheet Info */
+.timesheet-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.info-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+}
+
+.info-value {
+    font-size: 12px;
+    color: #333;
+    font-weight: 600;
+}
+
+.info-value.logged-in {
+    color: #4CAF50;
+}
+
+.info-value.logged-out {
+    color: #F44336;
+}
+
+/* ============================================
+   STATISTICS SECTION
+   ============================================ */
+.statistics-section {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 435px;
+    overflow-y: auto;
+}
+
+.stat-item-container {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.stat-item-container:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+/* Stat Header */
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.stat-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.progress-bar-background {
+    flex: 1;
+    height: 8px;
+    background-color: #E8E8E8;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    min-width: 8px;
+}
+
+.progress-bar.today {
+    background-color: #26C6DA;
+}
+
+.progress-bar.week {
+    background-color: #EF5350;
+}
+
+.progress-bar.month {
+    background-color: #FFA726;
+}
+
+.progress-bar.remaining {
+    background-color: #42A5F5;
+}
+
+.progress-percentage {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    min-width: 40px;
+    text-align: right;
+}
+
+/* Days Info */
+.days-info {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+    display: block;
+}
+
+/* ============================================
+   Dashboard Summery Section
+   ============================================ */
+
+.dahshboard-summery-section {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 435px;
+    overflow-y: auto;
+}
+
+.dahshboard-summery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dashboard-chart-data {
+    justify-items: center;
+}
+
+/* ============================================
+   SPINNER OVERLAY
+   ============================================ */
+.backgroundInverse {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* ============================================
+   ATTENDANCE RECORDS TABLE
+   ============================================ */
+.attendance-records-section {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    text-align: center;
+}
+
+.attendance-table thead {
+    background-color: #F4F6F9;;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.attendance-table th {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+
+}
+
+.attendance-table td {
+    padding: 12px;
+    border-bottom: 1px solid #F0F0F0;
+    color: #666;
+    text-align: center;
+    background: #F4F6F9;;
+}
+
+.attendance-table tbody tr:hover {
+    background-color: #FAFAFA;
+}
+
+.attendance-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.hours-cell {
+    font-weight: 600;
+    color: #333;
+}
+
+/* ============================================
+   STATUS BADGE STYLES - ALL 4 TYPES
+   ============================================ */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center;
+    min-width: 70px;
+}
+
+/**
+ * PRESENT Badge (Green)
+ * User attended full day with proper login/logout times
+ */
+.status-badge.present {
+    background-color: #E8F5E9;      /* Light green background */
+    color: #2E7D32;                 /* Dark green text */
+    border: 1px solid #C8E6C9;      /* Green border */
+}
+
+/**
+ * ABSENT Badge (Red)
+ * User did not attend work on that day
+ */
+.status-badge.absent {
+    background-color: #FFEBEE;      /* Light red background */
+    color: #C62828;                 /* Dark red text */
+    border: 1px solid #EF9A9A;      /* Red border */
+}
+
+/**
+ * LATE Badge (Orange)
+ * User came late but completed the day
+ */
+.status-badge.late {
+    background-color: #FFF3E0;      /* Light orange background */
+    color: #E65100;                 /* Dark orange text */
+    border: 1px solid #FFE0B2;      /* Orange border */
+}
+
+/**
+ * HALF-DAY Badge (Teal)
+ * User worked only part of the day
+ */
+.status-badge.half-day {
+    background-color: #E0F2F1;      /* Light teal background */
+    color: #00695C;                 /* Dark teal text */
+    border: 1px solid #B2DFDB;      /* Teal border */
+}
+
+.empty-state {
+    text-align: center;
+    padding: 28px 20px 0px 15px;
+}
+
+.leave-empty-state {
+    text-align: center;
+    padding: 28px 20px 20px 20px;
+}
+/* ============================================
+   LEAVE TRACKER 
+   ============================================ */
+/* Container for the row of cards */
+
+.leave-tracker-section {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.leave-tracker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.leave-cards-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+}
+
+.leave-card {
+    flex: 1;
+    background: #FFFFFF;
+    border: 1px solid #F0F0F0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.leave-card-header {
+    font-size: 13px;
+    color: #757575;
+    margin-bottom: 8px;
+}
+
+.leave-card-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin-bottom: 8px;
+}
+
+.leave-card-footer {
+    font-size: 12px;
+    color: #9E9E9E;
+}
+
+@media (max-width: 768px) {
+    .leave-cards-container {
+        flex-direction: column;
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 1024px) {
+    .header {
+        margin-bottom: 16px;
+    }
+
+    .header-content {
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .progress-section {
+        padding: 20px;
+        height: auto;
+    }
+
+    .progress-container {
+        width: 180px;
+        height: 180px;
+    }
+
+    .progress-ring {
+        width: 180px;
+        height: 180px;
+    }
+
+    .hours {
+        font-size: 40px;
+    }
+
+    .statistics-section {
+        padding: 20px;
+        height: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        margin-bottom: 16px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 16px;
+    }
+
+    .title {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .subHeading {
+        flex-wrap: wrap;
+        padding: 10px 16px;
+        font-size: 11px;
+        gap: 6px;
+    }
+
+    .progress-section {
+        padding: 20px;
+        height: auto;
+    }
+
+    /* Stack columns vertically on tablet */
+    .timesheet-layout {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .info-column,
+    .ring-column {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .progress-container {
+        width: 160px;
+        height: 160px;
+    }
+
+    .progress-ring {
+        width: 160px;
+        height: 160px;
+    }
+
+    .hours {
+        font-size: 36px;
+    }
+
+    .unit {
+        font-size: 11px;
+    }
+
+    .timesheet-info {
+        width: 100%;
+    }
+
+    .info-item {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .statistics-section {
+        padding: 20px;
+        height: auto;
+    }
+
+    .stat-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+    }
+
+    .stat-value {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 12px;
+    }
+
+    .title {
+        font-size: 18px;
+    }
+
+    .subHeading {
+        font-size: 10px;
+        gap: 4px;
+        padding: 8px 12px;
+    }
+
+    .progress-section {
+        padding: 15px;
+        height: auto;
+    }
+
+    /* Stack columns vertically on mobile */
+    .timesheet-layout {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .info-column,
+    .ring-column {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .progress-container {
+        width: 140px;
+        height: 140px;
+    }
+
+    .progress-ring {
+        width: 140px;
+        height: 140px;
+    }
+
+    .hours {
+        font-size: 32px;
+    }
+
+    .unit {
+        font-size: 10px;
+    }
+
+    .statistics-section {
+        padding: 15px;
+        height: auto;
+    }
+
+    .stat-item-container {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+    }
+
+    .stat-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        margin-bottom: 8px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+    }
+
+    .stat-value {
+        font-size: 11px;
+    }
+
+    .progress-percentage {
+        font-size: 11px;
+        min-width: 35px;
+    }
+
+    .days-info {
+        font-size: 10px;
+    }
+
+    .status-badge {
+        padding: 3px 8px;
+        font-size: 10px;
+        min-width: 60px;
+    }
+}
+
+/* Container like payment strip */
+.timesheet-card {
+    background: #F4F6F9;
+    border-radius: 12px;
+    padding: 14px 40px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Single row layout */
+.timesheet-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Each column */
+.ts-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 120px;
+}
+
+/* Label (top text) */
+.ts-label {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+/* Value (bottom text) */
+.ts-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.timesheet-card:hover {
+    background: #EEF2F7;
+}
+
+.ts-item:not(:last-child) {
+    padding-right: 20px;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR - STATISTICS SECTION ONLY
+   ============================================ */
+
+/* Chrome, Edge, Safari */
+.statistics-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.statistics-section::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.statistics-section::-webkit-scrollbar-thumb {
+    background: #D0D7DE; /* soft grey */
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.statistics-section::-webkit-scrollbar-thumb:hover {
+    background: #a7e3ed /* matches your progress color */
+}
+
+/* Optional: hide scrollbar until hover (modern feel) */
+.statistics-section::-webkit-scrollbar {
+    width: 0px;
+}
+
+.statistics-section:hover::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Firefox */
+.statistics-section {
+    scrollbar-width: thin;
+    scrollbar-color: #D0D7DE transparent;
+}
+
+.statistics-section:hover {
+    scrollbar-color: #26C6DA transparent;
+}
+.leave-tracker-container-main {
+    min-height: 200px;
+}
